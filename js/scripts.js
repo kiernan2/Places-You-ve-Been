@@ -21,26 +21,71 @@ Places.prototype.addPlace = function(place) {
   this.places[place.id] = place;
 }
 
-let place1 = new Place("Istanbul", "b", "c", "o")
+Places.prototype.deletePlace = function(id) {
+  if (this.Places[id] === undefined) {
+    return false;
+  }
+  delete this.Places[id];
+  return true;
+}
+
+Places.prototype.findPlace = function(id) {
+  if (this.places[id] != undefined) {
+    return this.places[id];
+  }
+  return false;
+}
 
 // UI Logic
-$(document).ready(function() {
-  let places = new Places();
-  $("#place1").text(place1.location);
-  $("#stuff1").text(place1.landmarks + " " + place1.time + " " + place1.notes);
-  $("#place1").click(function(){
-    console.log("hi")
-    $("#stuff1").toggle();
+let places = new Places();
+
+function displayPlaceDetails(PlacesToDisplay) {
+  let placesList = $("ul#placesList");
+  let htmlForPlaceInfo = "";
+  Object.keys(PlacesToDisplay.places).forEach(function(key) {
+    const place = PlacesToDisplay.findPlace(key);
+    htmlForPlaceInfo += "<li id=" + place.id + ">" + place.location + "</li>"
+    console.log(place)
   });
+  placesList.html(htmlForPlaceInfo);
+};
+
+function attachPlaceListeners() {
+  $("ul#placesList").on("click", "li", function() {
+    showPlace(this.id);
+  });
+  $("#buttons").on("click", ".deleteButton", function() {
+    places.deletePlace(this.id);
+    $("#show-place").hide();
+    displayPlaceDetails(places);
+  });
+};
+
+function showPlace(placeId) {
+  const place = places.findPlace(placeId);
+  $("#show-place").show();
+  $(".location").html(place.location);
+  $(".landmarks").html(place.landmarks);
+  $(".time").html(place.time);
+  $(".notes").html(place.notes);
+}
+
+$(document).ready(function() {
+  attachPlaceListeners();
   $("#formOne").submit(function(event) {
     event.preventDefault();
-    let location = ($("input#inputLocation").val());
-    let landmarks = ($("input#inputLandmarks").val());
-    let time = ($("input#inputTime").val());
-    let notes = ($("input#inputNotes").val());
-    let place = new Place(location,landmarks,time,notes);
-    places.addPlace(place);
+    let inputtedLocation = ($("input#inputLocation").val());
+    let inputtedLandmarks = ($("input#inputLandmarks").val());
+    let inputtedTime = ($("input#inputTime").val());
+    let inputtedNotes = ($("input#inputNotes").val());
+    $("input#inputLocation").val("");
+    $("input#inputLandmarks").val("");
+    $("input#inputTime").val("");
+    $("input#inputNotes").val("");
+    let newPlace = new Place(inputtedLocation, inputtedLandmarks, inputtedTime, inputtedNotes);
+    places.addPlace(newPlace);
     console.log(places);
+    displayPlaceDetails(places);
   });
 });
 

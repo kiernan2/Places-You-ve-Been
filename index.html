@@ -9,14 +9,7 @@
   <script src="js/scripts.js"></script>
 </head>
 <body class="container">
-  <h1></h1>
-  <div>
-    <p id="place1"></p>
-    <div id="stuff1">
-      
-    </div>
-  </div>
-  <hi>Add your own</hi>
+  <hi>Add a Place</hi>
   <form id="formOne">
     <label for="inputLocation">Location</label>
     <input id="inputLocation" type="text">
@@ -28,5 +21,14 @@
     <input id="inputNotes" type="text">
     <button type="submit">Submit!</button>
   </form>
+  <h2>Place:</h2>
+  <ul id="placesList">
+  </ul>
+  <div id="show-place">
+    <p>Location: <span class="location"></span></p>
+    <p>Landmarks: <span class="landmarks"></span></p>
+    <p>Time: <span class="time"></span></p>
+    <p>Notes: <span class="notes"></span></p>
+  </div>
 </body>
 </html>
